@@ -26,6 +26,8 @@ module Erlang
     def read_any_raw
       case peek_1
       when ATOM then read_atom
+      when ATOM_UTF8 then read_atom
+      when SMALL_ATOM_UTF8 then read_small_atom
       when SMALL_INT then read_small_int
       when INT then read_int
       when SMALL_BIGNUM then read_small_bignum
@@ -94,8 +96,8 @@ module Erlang
     end
 
     def read_4_float
-      read(4).unpack("g").first 
-    end 
+      read(4).unpack("g").first
+    end
 
     def read_8_double
       read(8).unpack("G").first
@@ -106,8 +108,18 @@ module Erlang
     end
 
     def read_atom
-      fail("Invalid Type, not an atom") unless read_1 == ATOM
+      fail("Invalid Type, not an atom") unless read_1 == ATOM || read_1 == ATOM_UTF8
       length = read_2
+      if length == 0
+        ''
+      else
+        read_string(length).to_sym
+      end
+    end
+
+    def read_small_atom
+      fail("Invalid Type, not a small atom") unless read_1 == SMALL_ATOM_UTF8
+      length = read_1
       if length == 0
         ''
       else

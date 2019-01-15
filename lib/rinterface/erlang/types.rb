@@ -11,6 +11,8 @@ module Erlang
       NEW_FLOAT = 70
 
       ATOM = 100
+      ATOM_UTF8 = 118
+      SMALL_ATOM_UTF8 = 119
       REF = 101           #old style reference
       NEW_REF = 114
       PORT = 102          #not supported accross node boundaries

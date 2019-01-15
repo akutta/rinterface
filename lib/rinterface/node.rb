@@ -167,7 +167,7 @@ module Erlang
       # distChoose
       encode.write_2(5)
       # flags
-      encode.write_4(4|256|1024|2048)
+      encode.write_4(4|256|1024|2048|65536)
       # node name
       encode.write_string(full_host_name)
       encode.out.string
